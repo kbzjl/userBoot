@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ekgc.userBoot.dao.UserDao">
+	<select id="findUserListByQuery" parameterType="User" resultType="User">
+		select
+			id,
+		    name,
+		    cellphone
+		from
+			sys_user
+		<where>
+			<trim suffixOverrides="and">
+				<if test="id != null">id=#{id} and </if>
+				<if test="name != null and name !=''">name like concat('%',#{name},'%') and</if>
+				<if test="cellphone != null and cellphone !=''">cellphone=#{cellphone} and</if>
+			</trim>
+		</where>
+	</select>
+	<insert id="saveUser" parameterType="User">
+		insert into sys_user(
+		                        <trim suffixOverrides=",">
+		                        	<if test="id !=null">id,</if>
+		                        	<if test="name !=null and name !=''">name,</if>
+		                        	<if test="cellphone !=null and cellphone !=''">cellphone,</if>
+
+		                        </trim>
+		) values(
+		         <trim suffixOverrides=",">
+			         <if test="id !=null">#{id},</if>
+			         <if test="name !=null and name !=''">#{name},</if>
+			         <if test="cellphone !=null and cellphone !=''">#{cellphone},</if>
+		         </trim>
+		)
+	</insert>
+</mapper>
